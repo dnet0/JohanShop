@@ -1,11 +1,15 @@
-import { Button } from "@/components/ui/button"
 import { Outlet } from "react-router"
+import { CustomHeader } from "../components/CustomHeader"
+import { CustomFooter } from "../components/CustomFooter"
 
 export const ShopLayout = () => {
   return (
-    <div className="flex justify-center items-center h-screen flex-col gap-4">
-        ShopLayout
-        <Outlet />
+    <div className="bg-background text-foreground min-h-screen">
+        <CustomHeader />
+        <main>
+            <Outlet />
+        </main>
+        <CustomFooter />
     </div>
   )
 }
