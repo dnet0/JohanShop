@@ -1,73 +1,37 @@
-# React + TypeScript + Vite
+# JohanShop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Tienda de ropa minimalista con diseño elegante y funcionalidad fullstack**  
 
-Currently, two official plugins are available:
+JohanShop es un proyecto de práctica que simula una **tienda de ropa moderna**, con un **diseño minimalista inspirado en Tesla**, combinando **frontend, backend y autenticación de usuarios**.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El objetivo principal es **aprender y practicar desarrollo web fullstack**, incluyendo maquetación, componentes interactivos y manejo básico de datos de usuarios y productos.  
 
-## React Compiler
+---
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## ✨ Funcionalidades
 
-## Expanding the ESLint configuration
+- Página principal con **Hero section** y productos destacados  
+- Navegación clara y minimalista  
+- **Login y registro de usuarios** con validación  
+- Listado de productos con detalles y precios  
+- Carrito de compras básico  
+- Diseño **responsive** para móviles y tablets  
+- Footer con enlaces a redes sociales y newsletter  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠 Tecnologías
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Frontend:** HTML5, CSS3, JavaScript (opcional: React, TailwindCSS)  
+- **Backend:** Node.js / Express (o la tecnología que uses)  
+- **Base de datos:** MongoDB, PostgreSQL o SQLite según implementación  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📦 Instalación
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Clona el repositorio:  
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+git clone https://github.com/dnet0/JohanShop.git
+cd JohanShop
