@@ -1,131 +1,96 @@
-import { Menu, Search, ShoppingCart } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-
-interface HeaderProps {
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-}
-
+import { useRef } from "react";
+import { Link, useParams, useSearchParams } from "react-router";
+import { cn } from "@/lib/utils";
+import { CustomLogo } from "@/components/custom/CustomLogo";
 export const CustomHeader = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const {gender} = useParams();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const search = searchParams.get("query") || "";
 
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.key !== 'Enter') return;
+    
+    const query = inputRef.current?.value.trim(); 
+    const newSearchParams = new URLSearchParams();
+    if(query) { 
+      newSearchParams.set("query", query);
+    }
+    setSearchParams(newSearchParams);
+  }
+
+  return <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-slate-50">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <a href="/" className="text-xl lg:text-2xl font-light tracking-wider text-foreground hover:text-foreground/80 transition-colors duration-300">
-            LUXE
-          </a>
+          <CustomLogo />
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-10">
-            <a href="#coleccion" className="text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Colección
-            </a>
-            <a href="#hombre" className="text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
+          {/* Navigation - Desktop */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" 
+            className={cn("text-sm font-medium transition-colors hover:text-primary", 
+            (gender === undefined) && "underline underline-offset-4")}>
+              Todos
+            </Link>
+            <Link to="/gender/men" 
+            className={cn("text-sm font-medium transition-colors hover:text-primary",
+              (gender === 'men' ) && "underline underline-offset-4"
+            )}>
               Hombre
-            </a>
-            <a href="#mujer" className="text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
+            </Link>
+            <Link to="/gender/women" 
+            className={cn("text-sm font-medium transition-colors hover:text-primary",
+              (gender === 'women' ) && "underline underline-offset-4"
+            )}>
               Mujer
-            </a>
-            <a href="#accesorios" className="text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Accesorios
-            </a>
-            <a href="#contacto" className="text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Contacto
-            </a>
+            </Link>
+            <Link to="/gender/kid" 
+            className={cn("text-sm font-medium transition-colors hover:text-primary",
+              (gender === 'kid' ) && "underline underline-offset-4"
+            )}>
+              Niños
+            </Link>
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* Search Bar */}
-            <div className="relative w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Buscar..."
-                value={""}
-                onChange={(e) => {}}
-                className="pl-10 h-9 bg-card/50 border-border/40 focus:border-primary/20"
-              />
+          {/* Search and Cart */}
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input 
+                ref={inputRef}
+                placeholder="Buscar productos..."
+                onKeyDown={handleOnKeyDown}
+                defaultValue={search}
+                className="pl-9 w-64 h-9" />
+              </div>
             </div>
-
-            {/* Cart Button */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                0
-              </span>
-            </Button>
-          </div>
-
-          {/* Mobile Actions */}
-          <div className="flex lg:hidden items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-            >
+            
+            <Button variant="ghost" size="icon" className="md:hidden">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                0
-              </span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
+            <Link to="/auth/login">
+              <Button 
+              variant="default" 
+              size="sm" 
+              className="ml-2">
+                Login
+              </Button>
+            </Link>
+            <Link to="/admin">
+              <Button 
+              variant="destructive" 
+              size="sm" 
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold ml-2">
+                Admin
+              </Button>
+            </Link>
           </div>
         </div>
-
-        {/* Mobile Search Bar */}
-        {isSearchOpen && (
-          <div className="lg:hidden py-4 border-t border-border/40 animate-fade-in">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Buscar productos..."
-                value={""}
-                onChange={(e) => {}}
-                className="pl-10 bg-card/50 border-border/40 focus:border-primary/20"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="lg:hidden py-6 space-y-4 border-t border-border/40 animate-fade-in">
-            <a href="#coleccion" className="block text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Colección
-            </a>
-            <a href="#hombre" className="block text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Hombre
-            </a>
-            <a href="#mujer" className="block text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Mujer
-            </a>
-            <a href="#accesorios" className="block text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Accesorios
-            </a>
-            <a href="#contacto" className="block text-sm font-normal tracking-wide text-foreground/80 hover:text-foreground transition-colors duration-300">
-              Contacto
-            </a>
-          </nav>
-        )}
       </div>
-    </header>
-  );
+    </header>;
 };
-
